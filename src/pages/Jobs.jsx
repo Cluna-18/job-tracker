@@ -1,7 +1,27 @@
 function Jobs(){
+     const jobs = [
+    { id: 1, company: "Google", role: "Front End Developer", status: "Accepted" },
+    { id: 2, company: "American Eagle", role: "UI/UX Designer", status: "Rejected" },
+    { id: 3, company: "UIC", role: "Entry Level Front End Developer", status: "In Progress" },
+  ];
     return(
-        <div>
+        <div className="jobs-page">
+            <div className="jobs-header">
             <h1>Jobs</h1>
+            <p> Monitor your applications</p>
+            </div>
+
+            <div className="jobs-list">
+                {jobs.map((job) => (
+                    <div className="job-card" key={job.id}>
+                    <h3>{job.company}</h3>
+                    <p>{job.role}</p>
+                    <span className={`status-badge ${job.status.toLowerCase().replace(/\s+/g, "-")}`}>
+                    {job.status}
+                    </span>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
