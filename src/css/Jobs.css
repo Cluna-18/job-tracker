@@ -1,0 +1,66 @@
+.jobs-page {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.jobs-header h1 {
+    font-size: 48px;
+    color: #0f172a;
+    margin: 0;
+}
+.jobs-header p {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #64748b;
+}
+.jobs-list {
+    display: grid;
+    gap: 16px;
+}
+
+.job-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transition: transform 0.15s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+}
+
+.job-card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.job-card p {
+  margin: 6px 0 12px 0;
+  color: #475569;
+  font-size: 14px;
+}
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-badge.accepted {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.in-progress {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}

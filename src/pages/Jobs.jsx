@@ -1,3 +1,5 @@
+import "../css/Jobs.css"
+
 function Jobs(){
      const jobs = [
     { id: 1, company: "Google", role: "Front End Developer", status: "Accepted" },
@@ -10,6 +12,9 @@ function Jobs(){
             <h1>Jobs</h1>
             <p> Monitor your applications</p>
             </div>
+            <div className="add-job">
+                <button className="add-job-button">+ Add Job</button>
+            </div>
 
             <div className="jobs-list">
                 {jobs.map((job) => (
@@ -19,6 +24,8 @@ function Jobs(){
                     <span className={`status-badge ${job.status.toLowerCase().replace(/\s+/g, "-")}`}>
                     {job.status}
                     </span>
+                    <button className="edit-button">Edit</button>
+                    <button className="delete-button">Delete</button>
                     </div>
                 ))}
             </div>

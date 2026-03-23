@@ -10,7 +10,7 @@ function SideBar() {
 
       <nav className="sidebar-nav">
         <NavLink to="/" end>Dashboard</NavLink>
-        <NavLink to="/jobs">Applications</NavLink>
+        <NavLink to="/jobs">Jobs</NavLink>
         <NavLink to="/analytics">Analytics</NavLink>
         <NavLink to="/settings">Settings</NavLink>
       </nav>
