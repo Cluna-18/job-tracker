@@ -1,49 +1,73 @@
 .jobs-page {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .jobs-header h1 {
-    font-size: 48px;
-    color: #0f172a;
-    margin: 0;
-}
-.jobs-header p {
-    margin-top: 8px;
-    font-size: 16px;
-    color: #64748b;
-}
-.jobs-list {
-    display: grid;
-    gap: 16px;
-}
-
-.job-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-  transition: transform 0.15s ease;
-}
-
-.job-card:hover {
-  transform: translateY(-2px);
-}
-
-.job-card h3 {
+  font-size: 42px;
   margin: 0;
-  font-size: 18px;
   color: #0f172a;
 }
 
-.job-card p {
-  margin: 6px 0 12px 0;
-  color: #475569;
-  font-size: 14px;
+.jobs-header p {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 16px;
 }
+
+.add-job {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-job-button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-job-button:hover {
+  background-color: #2563eb;
+}
+
+.jobs-list {
+  display: grid;
+  gap: 16px;
+}
+
+.job-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.job-card-content h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #0f172a;
+}
+
+.job-card-content p {
+  margin: 8px 0 0 0;
+  color: #475569;
+  font-size: 16px;
+}
+
 .status-badge {
   display: inline-block;
+  width: fit-content;
+  margin-top: 14px;
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 13px;
@@ -63,4 +87,37 @@
 .status-badge.in-progress {
   background-color: #dbeafe;
   color: #1d4ed8;
+}
+
+.job-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button,
+.delete-button {
+  border: none;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.edit-button {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.edit-button:hover {
+  background-color: #cbd5e1;
+}
+
+.delete-button {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.delete-button:hover {
+  background-color: #fecaca;
 }
