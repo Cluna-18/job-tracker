@@ -1,4 +1,4 @@
-function JobCard({ job, onDelete }) {
+function JobCard({ job, onDelete, onEdit }) {
   return (
     <div className="job-card">
       <div className="job-card-content">
@@ -15,7 +15,9 @@ function JobCard({ job, onDelete }) {
       </div>
 
       <div className="job-actions">
-        <button className="edit-button">Edit</button>
+        <button className="edit-button" onClick={() => onEdit(job)}>
+            Edit
+        </button>
         <button className="delete-button" onClick={() => onDelete(job.id)}>
             Delete
         </button>      
