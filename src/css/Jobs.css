@@ -159,3 +159,9 @@
 .job-form button:hover {
   background-color: #2563eb;
 }     
+
+.job-date {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}

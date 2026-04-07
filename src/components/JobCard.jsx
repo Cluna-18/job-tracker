@@ -1,4 +1,7 @@
 function JobCard({ job, onDelete, onEdit }) {
+  const formatDate = (date) => {
+  return new Date(date).toLocaleDateString();
+};
   return (
     <div className="job-card">
       <div className="job-card-content">
@@ -12,6 +15,8 @@ function JobCard({ job, onDelete, onEdit }) {
         >
           {job.status}
         </span>
+        <p className="notes">{job.notes}</p>
+        <p className="job-date">Applied: {formatDate(job.dateApplied)}</p>
       </div>
 
       <div className="job-actions">

@@ -2,11 +2,21 @@ import "../css/Jobs.css";
 import JobCard from "../components/JobCard";
 import { useState } from "react";
 
+
+
+//TODO: Add location as another field. Maybe data applied? Notes for portals? 
+
+
 function Jobs() {
+
+    const getTodayDate = () => {
+  return new Date().toISOString().split("T")[0];
+};
+
   const [jobs, setJobs] = useState([
-    { id: 1, company: "Google", role: "Front End Developer", status: "Accepted" },
-    { id: 2, company: "American Eagle", role: "UI/UX Designer", status: "Rejected" },
-    { id: 3, company: "UIC", role: "Entry Level Front End Developer", status: "In Progress" },
+    { id: 1, company: "Google", role: "Front End Developer", status: "Accepted", notes: "Applied on linkedIn", dateApplied: getTodayDate() },
+    { id: 2, company: "American Eagle", role: "UI/UX Designer", status: "Rejected", notes: "Did not meet requirements", dateApplied: getTodayDate() },
+    { id: 3, company: "UIC", role: "Entry Level Front End Developer", status: "In Progress", notes: "Awaiting response", dateApplied: getTodayDate() },
   ]);
 
   const handleDelete = (id) => {
@@ -19,7 +29,7 @@ function Jobs() {
   const [showForm, setShowForm] = useState(false);
 
   const [newJob, setNewJob] = useState({
-    company: "", role: "", status: "In Progress",
+    company: "", role: "", status: "In Progress", notes: "", dateApplied: getTodayDate(),
   });
 
   const handleChange = (e) => {
@@ -53,6 +63,8 @@ function Jobs() {
     company: "",
     role: "",
     status: "In Progress",
+    notes: "",
+    dateApplied: getTodayDate(),
   });
 
   setEditingJobId(null);
@@ -63,15 +75,24 @@ function Jobs() {
   const [editingJobId, setEditingJobId] = useState(null);
 
   const handleEdit = (job) => {
-    setNewJob({
-        company: job.company,
-        role: job.role,
-        status: job.status,
-    });
+  setNewJob({
+    company: job.company,
+    role: job.role,
+    status: job.status,
+    dateApplied: job.dateApplied,
+  });
 
-    setEditingJobId(job.id);
-    setShowForm(true);
-  }
+  setEditingJobId(job.id);
+  setShowForm(true);
+};
+
+    //Helper function to get current date
+  
+
+
+
+
+
 
 
 
@@ -94,6 +115,8 @@ function Jobs() {
         company: "",
         role: "",
         status: "In Progress",
+        notes: "",
+        dateApplied: getTodayDate(),
       });
     }
   }}
@@ -122,6 +145,20 @@ function Jobs() {
             required
           />
 
+          <input
+            type="text"
+            name="notes"
+            placeholder="Notes"
+            value={newJob.notes}
+            onChange={handleChange}
+          />
+
+          <input
+            type="date"
+            name="dateApplied"
+            value={newJob.dateApplied}
+            onChange={handleChange}
+          />
           <select
             name="status"
             value={newJob.status}
