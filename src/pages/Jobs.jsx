@@ -13,20 +13,28 @@ function Jobs() {
   return new Date().toISOString().split("T")[0];
 };
 
+
+  //TEMP to hold the jobs for right now. Will be replaced with backend data later.
   const [jobs, setJobs] = useState([
     { id: 1, company: "Google", role: "Front End Developer", status: "Accepted", notes: "Applied on linkedIn", dateApplied: getTodayDate() },
     { id: 2, company: "American Eagle", role: "UI/UX Designer", status: "Rejected", notes: "Did not meet requirements", dateApplied: getTodayDate() },
     { id: 3, company: "UIC", role: "Entry Level Front End Developer", status: "In Progress", notes: "Awaiting response", dateApplied: getTodayDate() },
   ]);
+  //------------------------------------------------------------
 
   const handleDelete = (id) => {
     setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
   };
 
-
-
   //Used for showing the form to add new jobs
   const [showForm, setShowForm] = useState(false);
+
+  const [filterStatus, setFilterStatus] = useState("All");
+
+  const filteredJobs =
+  filterStatus === "All"
+    ? jobs
+    : jobs.filter((job) => job.status === filterStatus);
 
   const [newJob, setNewJob] = useState({
     company: "", role: "", status: "In Progress", notes: "", dateApplied: getTodayDate(),
@@ -79,50 +87,50 @@ function Jobs() {
     company: job.company,
     role: job.role,
     status: job.status,
+    notes: job.notes,
     dateApplied: job.dateApplied,
   });
 
   setEditingJobId(job.id);
   setShowForm(true);
 };
-
-    //Helper function to get current date
-  
-
-
-
-
-
-
-
-
-
   return (
     <div className="jobs-page">
       <div className="jobs-header">
         <h1>Applications</h1>
         <p>Monitor your applications</p>
       </div>
-
+      <div className = "filter-jobs">
+        <select
+            name="filterStatus"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+      </div>
       <div className="add-job">
         <button
-  className="add-job-button"
-  onClick={() => {
-    setShowForm(!showForm);
-    if (showForm) {
-      setEditingJobId(null);
-      setNewJob({
-        company: "",
-        role: "",
-        status: "In Progress",
-        notes: "",
-        dateApplied: getTodayDate(),
-      });
-    }
-  }}
->
-  {showForm ? "Cancel" : "+ Add Job"}
-</button>
+          className="add-job-button"
+          onClick={() => {
+            setShowForm(!showForm);
+            if (showForm) {
+              setEditingJobId(null);
+              setNewJob({
+                company: "",
+                role: "",
+                status: "In Progress",
+                notes: "",
+                dateApplied: getTodayDate(),
+              });
+            }
+          }}
+        >
+          {showForm ? "Cancel" : "+ Add Job"}
+        </button>
       </div>
 
       {showForm && (
@@ -176,7 +184,7 @@ function Jobs() {
       )}
 
       <div className="jobs-list">
-        {jobs.map((job) => (
+        {filteredJobs.map((job) => (
           <JobCard key={job.id} job={job} onDelete={handleDelete} onEdit={handleEdit} />
         ))}
       </div>

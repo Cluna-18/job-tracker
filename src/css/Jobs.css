@@ -1,3 +1,5 @@
+
+/* -------------------------- MAIN PAGE ----------------------- */
 .jobs-page {
   display: flex;
   flex-direction: column;
@@ -41,7 +43,7 @@
   display: grid;
   gap: 16px;
 }
-
+/*--------------------------- JOB CARDS ---------------------------- */
 .job-card {
   background-color: white;
   border-radius: 16px;
