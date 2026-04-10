@@ -100,7 +100,9 @@ function Jobs() {
         <h1>Applications</h1>
         <p>Monitor your applications</p>
       </div>
+
       <div className = "filter-jobs">
+        <label htmlFor="filterStatus">Filter by Status: </label>
         <select
             name="filterStatus"
             value={filterStatus}
@@ -112,6 +114,7 @@ function Jobs() {
             <option value="Rejected">Rejected</option>
           </select>
       </div>
+
       <div className="add-job">
         <button
           className="add-job-button"
@@ -132,7 +135,7 @@ function Jobs() {
           {showForm ? "Cancel" : "+ Add Job"}
         </button>
       </div>
-
+  
       {showForm && (
         <form className="job-form" onSubmit={handleAddJob}>
           <input
