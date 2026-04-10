@@ -1,17 +1,18 @@
 import "../css/Dashboard.css";
 
-function Dashboard() {
-  const stats = [
-    { title: "Total Applications", value: 25 },
-    { title: "Moving on to next steps", value: 10 },
-    { title: "Rejected", value: 5 },
-  ];
+function Dashboard({jobs}) {
+const totalApplications = jobs.length;
+const acceptedCount = jobs.filter((job) => job.status === "Accepted").length;
+const rejectedCount = jobs.filter((job) => job.status === "Rejected").length;
+const inProgressCount = jobs.filter((job) => job.status === "In Progress").length;
 
-  const recentApplications = [
-    { id: 1, company: "Google", role: "Front End Developer", status: "Accepted" },
-    { id: 2, company: "American Eagle", role: "UI/UX Designer", status: "Rejected" },
-    { id: 3, company: "UIC", role: "Entry Level Front End Developer", status: "In Progress" },
-  ];
+const stats = [
+  { title: "Total Applications", value: totalApplications },
+  { title: "In Progress", value: inProgressCount },
+  { title: "Rejected", value: rejectedCount },
+];
+
+  const recentApplications = [...jobs].slice(-3).reverse();
 
   return (
     <div className="dashboard-page">

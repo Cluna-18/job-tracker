@@ -7,29 +7,17 @@ import { useState } from "react";
 //TODO: Add location as another field. Maybe data applied? Notes for portals? 
 
 
-function Jobs() {
-
-    const getTodayDate = () => {
+function Jobs({jobs, setJobs}) {
+      const getTodayDate = () => {
   return new Date().toISOString().split("T")[0];
 };
-
-
-  //TEMP to hold the jobs for right now. Will be replaced with backend data later.
-  const [jobs, setJobs] = useState([
-    { id: 1, company: "Google", role: "Front End Developer", status: "Accepted", notes: "Applied on linkedIn", dateApplied: getTodayDate() },
-    { id: 2, company: "American Eagle", role: "UI/UX Designer", status: "Rejected", notes: "Did not meet requirements", dateApplied: getTodayDate() },
-    { id: 3, company: "UIC", role: "Entry Level Front End Developer", status: "In Progress", notes: "Awaiting response", dateApplied: getTodayDate() },
-  ]);
-  //------------------------------------------------------------
-
   const handleDelete = (id) => {
     setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
   };
 
-  //Used for showing the form to add new jobs
   const [showForm, setShowForm] = useState(false);
-
   const [filterStatus, setFilterStatus] = useState("All");
+  const [editingJobId, setEditingJobId] = useState(null);
 
   const filteredJobs =
   filterStatus === "All"
@@ -78,9 +66,6 @@ function Jobs() {
   setEditingJobId(null);
   setShowForm(false);
 };
-
-  //TODO: Add edit functionality to jobcard
-  const [editingJobId, setEditingJobId] = useState(null);
 
   const handleEdit = (job) => {
   setNewJob({
