@@ -1,7 +1,7 @@
 import "../css/Jobs.css";
 import JobCard from "../components/JobCard";
 import { useState } from "react";
-
+import { createJob } from "../api/jobsApi";
 
 
 //TODO: Add location as another field. Maybe data applied? Notes for portals? 
@@ -37,18 +37,20 @@ function Jobs({jobs, setJobs}) {
 
 
   //This is the entire function to handle adding new jobs to list. Passed to button
-  const handleAddJob = (e) => {
+const handleAddJob = async (e) => {
   e.preventDefault();
 
   if (editingJobId) {
     setJobs((prevJobs) =>
       prevJobs.map((job) =>
-        job.id === editingJobId ? { ...job, ...newJob } : job
+        job.jobId === editingJobId ? { ...job, ...newJob } : job
       )
     );
   } else {
+    const jobId = await createJob(newJob);
+
     const jobToAdd = {
-      id: Date.now(),
+      jobId,
       ...newJob,
     };
 
