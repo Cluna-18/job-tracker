@@ -1,16 +1,16 @@
 import "../css/Dashboard.css";
 
-function Dashboard({jobs}) {
-const totalApplications = jobs.length;
-const acceptedCount = jobs.filter((job) => job.status === "Accepted").length;
-const rejectedCount = jobs.filter((job) => job.status === "Rejected").length;
-const inProgressCount = jobs.filter((job) => job.status === "In Progress").length;
+function Dashboard({ jobs }) {
+  const totalApplications = jobs.length;
+  const acceptedCount = jobs.filter((job) => job.status === "Accepted").length;
+  const rejectedCount = jobs.filter((job) => job.status === "Rejected").length;
+  const inProgressCount = jobs.filter((job) => job.status === "In Progress").length;
 
-const stats = [
-  { title: "Total Applications", value: totalApplications },
-  { title: "In Progress", value: inProgressCount },
-  { title: "Rejected", value: rejectedCount },
-];
+  const stats = [
+    { title: "Total Applications", value: totalApplications },
+    { title: "In Progress", value: inProgressCount },
+    { title: "Rejected", value: rejectedCount },
+  ];
 
   const recentApplications = [...jobs].slice(-3).reverse();
 
@@ -35,10 +35,14 @@ const stats = [
 
         <div className="recent-list">
           {recentApplications.map((job) => (
-            <div className="recent-card" key={job.id}>
+            <div className="recent-card" key={job.jobId}>
               <h3>{job.company}</h3>
               <p>{job.role}</p>
-              <span className={`status-badge ${job.status.toLowerCase().replace(/\s+/g, "-")}`}>
+              <span
+                className={`status-badge ${job.status
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}
+              >
                 {job.status}
               </span>
             </div>

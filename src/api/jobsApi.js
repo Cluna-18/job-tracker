@@ -9,3 +9,8 @@ export const createJob = async (job) => {
 
   return await response.text();
 };
+
+export const getJobs = async () => {
+  const response = await fetch("http://localhost:8085/jobs");
+  return await response.json();
+}

@@ -1,7 +1,8 @@
 function JobCard({ job, onDelete, onEdit }) {
   const formatDate = (date) => {
-  return new Date(date).toLocaleDateString();
-};
+    return new Date(date).toLocaleDateString();
+  };
+
   return (
     <div className="job-card">
       <div className="job-card-content">
@@ -15,18 +16,19 @@ function JobCard({ job, onDelete, onEdit }) {
         >
           {job.status}
         </span>
+
         <p className="notes">{job.notes}</p>
         <p className="job-date">Applied: {formatDate(job.dateApplied)}</p>
       </div>
 
       <div className="job-actions">
         <button className="edit-button" onClick={() => onEdit(job)}>
-            Edit
+          Edit
         </button>
-        <button className="delete-button" onClick={() => onDelete(job.id)}>
-            Delete
-        </button>      
-        </div>
+        <button className="delete-button" onClick={() => onDelete(job.jobId)}>
+          Delete
+        </button>
+      </div>
     </div>
   );
 }

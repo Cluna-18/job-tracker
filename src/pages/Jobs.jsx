@@ -3,16 +3,13 @@ import JobCard from "../components/JobCard";
 import { useState } from "react";
 import { createJob } from "../api/jobsApi";
 
+function Jobs({ jobs, setJobs }) {
+  const getTodayDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
 
-//TODO: Add location as another field. Maybe data applied? Notes for portals? 
-
-
-function Jobs({jobs, setJobs}) {
-      const getTodayDate = () => {
-  return new Date().toISOString().split("T")[0];
-};
-  const handleDelete = (id) => {
-    setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
+  const handleDelete = (jobId) => {
+    setJobs((prevJobs) => prevJobs.filter((job) => job.jobId !== jobId));
   };
 
   const [showForm, setShowForm] = useState(false);
@@ -20,12 +17,16 @@ function Jobs({jobs, setJobs}) {
   const [editingJobId, setEditingJobId] = useState(null);
 
   const filteredJobs =
-  filterStatus === "All"
-    ? jobs
-    : jobs.filter((job) => job.status === filterStatus);
+    filterStatus === "All"
+      ? jobs
+      : jobs.filter((job) => job.status === filterStatus);
 
   const [newJob, setNewJob] = useState({
-    company: "", role: "", status: "In Progress", notes: "", dateApplied: getTodayDate(),
+    company: "",
+    role: "",
+    status: "In Progress",
+    notes: "",
+    dateApplied: getTodayDate(),
   });
 
   const handleChange = (e) => {
@@ -35,52 +36,51 @@ function Jobs({jobs, setJobs}) {
     });
   };
 
+  const handleAddJob = async (e) => {
+    e.preventDefault();
 
-  //This is the entire function to handle adding new jobs to list. Passed to button
-const handleAddJob = async (e) => {
-  e.preventDefault();
+    if (editingJobId) {
+      setJobs((prevJobs) =>
+        prevJobs.map((job) =>
+          job.jobId === editingJobId ? { ...job, ...newJob } : job
+        )
+      );
+    } else {
+      const jobId = await createJob(newJob);
 
-  if (editingJobId) {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.jobId === editingJobId ? { ...job, ...newJob } : job
-      )
-    );
-  } else {
-    const jobId = await createJob(newJob);
+      const jobToAdd = {
+        jobId,
+        ...newJob,
+      };
 
-    const jobToAdd = {
-      jobId,
-      ...newJob,
-    };
+      setJobs((prevJobs) => [...prevJobs, jobToAdd]);
+    }
 
-    setJobs((prevJobs) => [...prevJobs, jobToAdd]);
-  }
+    setNewJob({
+      company: "",
+      role: "",
+      status: "In Progress",
+      notes: "",
+      dateApplied: getTodayDate(),
+    });
 
-  setNewJob({
-    company: "",
-    role: "",
-    status: "In Progress",
-    notes: "",
-    dateApplied: getTodayDate(),
-  });
-
-  setEditingJobId(null);
-  setShowForm(false);
-};
+    setEditingJobId(null);
+    setShowForm(false);
+  };
 
   const handleEdit = (job) => {
-  setNewJob({
-    company: job.company,
-    role: job.role,
-    status: job.status,
-    notes: job.notes,
-    dateApplied: job.dateApplied,
-  });
+    setNewJob({
+      company: job.company,
+      role: job.role,
+      status: job.status,
+      notes: job.notes,
+      dateApplied: job.dateApplied,
+    });
 
-  setEditingJobId(job.id);
-  setShowForm(true);
-};
+    setEditingJobId(job.jobId);
+    setShowForm(true);
+  };
+
   return (
     <div className="jobs-page">
       <div className="jobs-header">
@@ -88,18 +88,18 @@ const handleAddJob = async (e) => {
         <p>Monitor your applications</p>
       </div>
 
-      <div className = "filter-jobs">
+      <div className="filter-jobs">
         <label htmlFor="filterStatus">Filter by Status: </label>
         <select
-            name="filterStatus"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <option value="All">All</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Accepted">Accepted</option>
-            <option value="Rejected">Rejected</option>
-          </select>
+          name="filterStatus"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          <option value="All">All</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
       </div>
 
       <div className="add-job">
@@ -122,7 +122,7 @@ const handleAddJob = async (e) => {
           {showForm ? "Cancel" : "+ Add Job"}
         </button>
       </div>
-  
+
       {showForm && (
         <form className="job-form" onSubmit={handleAddJob}>
           <input
@@ -157,6 +157,7 @@ const handleAddJob = async (e) => {
             value={newJob.dateApplied}
             onChange={handleChange}
           />
+
           <select
             name="status"
             value={newJob.status}
@@ -167,15 +168,20 @@ const handleAddJob = async (e) => {
             <option value="Rejected">Rejected</option>
           </select>
 
-            <button type="submit">
-                {editingJobId ? "Save Changes" : "Add Job"}
-            </button>        
+          <button type="submit">
+            {editingJobId ? "Save Changes" : "Add Job"}
+          </button>
         </form>
       )}
 
       <div className="jobs-list">
         {filteredJobs.map((job) => (
-          <JobCard key={job.id} job={job} onDelete={handleDelete} onEdit={handleEdit} />
+          <JobCard
+            key={job.jobId}
+            job={job}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
         ))}
       </div>
     </div>
