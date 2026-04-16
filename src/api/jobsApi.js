@@ -14,3 +14,9 @@ export const getJobs = async () => {
   const response = await fetch("http://localhost:8085/jobs");
   return await response.json();
 }
+
+export const deleteJob = async (jobId) => {
+  const response = await fetch(`http://localhost:8085/jobs/${jobId}`, {
+    method: "DELETE",
+  });
+};

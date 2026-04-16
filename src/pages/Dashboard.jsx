@@ -5,11 +5,17 @@ function Dashboard({ jobs }) {
   const acceptedCount = jobs.filter((job) => job.status === "Accepted").length;
   const rejectedCount = jobs.filter((job) => job.status === "Rejected").length;
   const inProgressCount = jobs.filter((job) => job.status === "In Progress").length;
+  const appliedCount = jobs.filter((job) => job.status === "Applied").length;
+  const interviewCount = jobs.filter((job) => job.status === "Interview").length;
+
 
   const stats = [
     { title: "Total Applications", value: totalApplications },
     { title: "In Progress", value: inProgressCount },
     { title: "Rejected", value: rejectedCount },
+    { title: "Applied", value: appliedCount },
+    { title: "Interview", value: interviewCount },
+
   ];
 
   const recentApplications = [...jobs].slice(-3).reverse();
@@ -38,6 +44,7 @@ function Dashboard({ jobs }) {
             <div className="recent-card" key={job.jobId}>
               <h3>{job.company}</h3>
               <p>{job.role}</p>
+              <p>{job.reachedOut}</p>
               <span
                 className={`status-badge ${job.status
                   .toLowerCase()

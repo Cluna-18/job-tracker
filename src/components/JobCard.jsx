@@ -18,6 +18,7 @@ function JobCard({ job, onDelete, onEdit }) {
         </span>
 
         <p className="notes">{job.notes}</p>
+        <p className="notes">{job.reachedOut}</p>
         <p className="job-date">Applied: {formatDate(job.dateApplied)}</p>
       </div>
 

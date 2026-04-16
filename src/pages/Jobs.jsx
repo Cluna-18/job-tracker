@@ -2,15 +2,19 @@ import "../css/Jobs.css";
 import JobCard from "../components/JobCard";
 import { useState } from "react";
 import { createJob } from "../api/jobsApi";
+import { deleteJob } from "../api/jobsApi";
+import confirmDelete from "../components/confirmDelete";
 
 function Jobs({ jobs, setJobs }) {
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
   };
 
-  const handleDelete = (jobId) => {
+  const handleDelete = async (jobId) => {
+    await deleteJob(jobId);
     setJobs((prevJobs) => prevJobs.filter((job) => job.jobId !== jobId));
   };
+  
 
   const [showForm, setShowForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState("All");
@@ -26,6 +30,7 @@ function Jobs({ jobs, setJobs }) {
     role: "",
     status: "In Progress",
     notes: "",
+    reachedOut: "",
     dateApplied: getTodayDate(),
   });
 
@@ -61,6 +66,7 @@ function Jobs({ jobs, setJobs }) {
       role: "",
       status: "In Progress",
       notes: "",
+      reachedOut: "",
       dateApplied: getTodayDate(),
     });
 
@@ -74,6 +80,7 @@ function Jobs({ jobs, setJobs }) {
       role: job.role,
       status: job.status,
       notes: job.notes,
+      reachedOut: job.reachedOut,
       dateApplied: job.dateApplied,
     });
 
@@ -114,6 +121,7 @@ function Jobs({ jobs, setJobs }) {
                 role: "",
                 status: "In Progress",
                 notes: "",
+                reachedOut: "",
                 dateApplied: getTodayDate(),
               });
             }
@@ -157,6 +165,14 @@ function Jobs({ jobs, setJobs }) {
             value={newJob.dateApplied}
             onChange={handleChange}
           />
+          <select
+            name="reachedOut"
+            value={newJob.reachedOut}
+            onChange={handleChange}
+          >
+            <option value="reached">I reached out to someone</option>
+            <option value="not-reached">I didn't reach out</option>
+          </select>
 
           <select
             name="status"
@@ -164,8 +180,11 @@ function Jobs({ jobs, setJobs }) {
             onChange={handleChange}
           >
             <option value="In Progress">In Progress</option>
+            <option value="Applied">Applied</option>
             <option value="Accepted">Accepted</option>
+            <option value="Interview">Interview</option>
             <option value="Rejected">Rejected</option>
+            
           </select>
 
           <button type="submit">
@@ -179,7 +198,7 @@ function Jobs({ jobs, setJobs }) {
           <JobCard
             key={job.jobId}
             job={job}
-            onDelete={handleDelete}
+            onDelete={confirmDelete.bind(null, job.jobId, handleDelete)}
             onEdit={handleEdit}
           />
         ))}
