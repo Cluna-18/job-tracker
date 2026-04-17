@@ -15,7 +15,6 @@ function Dashboard({ jobs }) {
     { title: "Rejected", value: rejectedCount },
     { title: "Applied", value: appliedCount },
     { title: "Interview", value: interviewCount },
-
   ];
 
   const recentApplications = [...jobs].slice(-3).reverse();

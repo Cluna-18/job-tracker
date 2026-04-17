@@ -31,6 +31,7 @@ function Jobs({ jobs, setJobs }) {
     status: "In Progress",
     notes: "",
     reachedOut: "",
+    link: "",
     dateApplied: getTodayDate(),
   });
 
@@ -67,6 +68,7 @@ function Jobs({ jobs, setJobs }) {
       status: "In Progress",
       notes: "",
       reachedOut: "",
+      link: "",
       dateApplied: getTodayDate(),
     });
 
@@ -81,6 +83,7 @@ function Jobs({ jobs, setJobs }) {
       status: job.status,
       notes: job.notes,
       reachedOut: job.reachedOut,
+      link: job.link,
       dateApplied: job.dateApplied,
     });
 
@@ -122,6 +125,7 @@ function Jobs({ jobs, setJobs }) {
                 status: "In Progress",
                 notes: "",
                 reachedOut: "",
+                link: "",
                 dateApplied: getTodayDate(),
               });
             }
@@ -173,6 +177,14 @@ function Jobs({ jobs, setJobs }) {
             <option value="reached">I reached out to someone</option>
             <option value="not-reached">I didn't reach out</option>
           </select>
+
+          <input
+            type="text"
+            name="link"
+            placeholder="Portal link"
+            value={newJob.link}
+            onChange={handleChange}
+          />
 
           <select
             name="status"
