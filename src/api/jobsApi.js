@@ -20,3 +20,17 @@ export const deleteJob = async (jobId) => {
     method: "DELETE",
   });
 };
+
+export const updateJob = async (jobId, job) => {
+  const response = await fetch(`http://localhost:8085/jobs/${jobId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(job),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update job");
+  }
+};

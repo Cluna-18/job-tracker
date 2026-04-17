@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createJob } from "../api/jobsApi";
 import { deleteJob } from "../api/jobsApi";
 import confirmDelete from "../components/confirmDelete";
+import { updateJob } from "../api/jobsApi";
 
 function Jobs({ jobs, setJobs }) {
   const getTodayDate = () => {
@@ -11,9 +12,17 @@ function Jobs({ jobs, setJobs }) {
   };
 
   const handleDelete = async (jobId) => {
+  try {
     await deleteJob(jobId);
-    setJobs((prevJobs) => prevJobs.filter((job) => job.jobId !== jobId));
-  };
+
+    setJobs((prevJobs) =>
+      prevJobs.filter((job) => job.jobId !== jobId)
+    );
+  } catch (error) {
+    console.error("Failed to delete job:", error);
+    alert("Could not delete job. Please try again.");
+  }
+};
   
 
   const [showForm, setShowForm] = useState(false);
@@ -43,12 +52,17 @@ function Jobs({ jobs, setJobs }) {
   };
 
   const handleAddJob = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
+  try {
     if (editingJobId) {
+      await updateJob(editingJobId, newJob);
+
       setJobs((prevJobs) =>
         prevJobs.map((job) =>
-          job.jobId === editingJobId ? { ...job, ...newJob } : job
+          job.jobId === editingJobId
+            ? { ...job, ...newJob }
+            : job
         )
       );
     } else {
@@ -67,29 +81,33 @@ function Jobs({ jobs, setJobs }) {
       role: "",
       status: "In Progress",
       notes: "",
+      dateApplied: getTodayDate(),
       reachedOut: "",
       link: "",
-      dateApplied: getTodayDate(),
     });
 
     setEditingJobId(null);
     setShowForm(false);
-  };
+  } catch (error) {
+    console.error("Failed to save job:", error);
+    alert("Could not save job. Please try again.");
+  }
+};
 
-  const handleEdit = (job) => {
-    setNewJob({
-      company: job.company,
-      role: job.role,
-      status: job.status,
-      notes: job.notes,
-      reachedOut: job.reachedOut,
-      link: job.link,
-      dateApplied: job.dateApplied,
-    });
+const handleEdit = (job) => {
+  setNewJob({
+    company: job.company || "",
+    role: job.role || "",
+    status: job.status || "In Progress",
+    notes: job.notes || "",
+    reachedOut: job.reachedOut || "",
+    link: job.link || "",
+    dateApplied: job.dateApplied || getTodayDate(),
+  });
 
-    setEditingJobId(job.jobId);
-    setShowForm(true);
-  };
+  setEditingJobId(job.jobId);
+  setShowForm(true);
+};
 
   return (
     <div className="jobs-page">
@@ -171,9 +189,10 @@ function Jobs({ jobs, setJobs }) {
           />
           <select
             name="reachedOut"
-            value={newJob.reachedOut}
+            value={newJob.reachedOut || ""}
             onChange={handleChange}
           >
+            <option value="">Select one</option>
             <option value="reached">I reached out to someone</option>
             <option value="not-reached">I didn't reach out</option>
           </select>
