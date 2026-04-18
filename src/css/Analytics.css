@@ -1,0 +1,49 @@
+.analytics-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.analytics-header h1 {
+  font-size: 48px;
+  color: #0f172a;
+  margin: 0;
+}
+
+.analytics-header p {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #64748b;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transition: transform 0.15s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f172a;
+}
