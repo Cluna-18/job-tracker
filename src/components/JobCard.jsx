@@ -1,13 +1,16 @@
+
 function JobCard({ job, onDelete, onEdit }) {
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString();
   };
 
+  const formRef = useRef(null);
+
   return (
     <div className="job-card">
       <div className="job-card-content">
         <h3>{job.company}</h3>
-        <p>{job.role}</p>
+        <p>Role: {job.role}</p>
 
         <span
           className={`status-badge ${job.status
@@ -17,10 +20,34 @@ function JobCard({ job, onDelete, onEdit }) {
           {job.status}
         </span>
 
-        <p className="notes">{job.notes}</p>
-        <p className="notes">{job.reachedOut}</p>
-        <p className="notes">{job.link}</p>
+        {job.notes?.trim() && (
+          <p className="notes">Notes: {job.notes}</p>
+        )}
+
+        <p className="notes">
+          Reached Out? {" "}
+          {job.reachedOut === "reached"
+            ? "Yes"
+            : job.reachedOut === "not-reached"
+            ? "No"
+            : ""}
+        </p>
+
+        {job.link?.trim() && (
+          <p>
+            Link:{" "}
+            <a
+              href={job.link.startsWith("http") ? job.link : `https://${job.link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Job
+            </a>
+          </p>
+        )}
+
         <p className="job-date">Applied: {formatDate(job.dateApplied)}</p>
+
       </div>
 
       <div className="job-actions">

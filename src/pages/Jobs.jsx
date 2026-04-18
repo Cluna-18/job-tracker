@@ -5,6 +5,7 @@ import { createJob } from "../api/jobsApi";
 import { deleteJob } from "../api/jobsApi";
 import confirmDelete from "../components/confirmDelete";
 import { updateJob } from "../api/jobsApi";
+import { useState, useRef } from "react";
 
 function Jobs({ jobs, setJobs }) {
   const getTodayDate = () => {
@@ -108,6 +109,8 @@ const handleEdit = (job) => {
   setEditingJobId(job.jobId);
   setShowForm(true);
 };
+
+const formRef = useRef(null);
 
   return (
     <div className="jobs-page">
