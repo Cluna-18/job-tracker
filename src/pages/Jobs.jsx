@@ -27,6 +27,7 @@ function Jobs({ jobs, setJobs }) {
 
   const [showForm, setShowForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState("All");
+  const [sortStatus, setSortStatus ] = useState("Newest First");
   const [editingJobId, setEditingJobId] = useState(null);
   const formRef = useRef(null);
 
@@ -34,6 +35,32 @@ function Jobs({ jobs, setJobs }) {
     filterStatus === "All"
       ? jobs
       : jobs.filter((job) => job.status === filterStatus);
+
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
+    const dateA = new Date(a.dateApplied);
+    const dateB = new Date(b.dateApplied);
+    
+    if (sortStatus === "Newest First") {
+      return dateB - dateA;
+    } else if (sortStatus === "Oldest First") {
+      return dateA - dateB;
+    } else if (sortStatus === "Last 24 Hours") {
+      const now = new Date();
+      const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      return (
+        (dateB >= twentyFourHoursAgo ? 1 : 0) -
+        (dateA >= twentyFourHoursAgo ? 1 : 0)
+      );
+    } else if (sortStatus === "Last week") {
+      const now = new Date();
+      const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      return (
+        (dateB >= oneWeekAgo ? 1 : 0) -
+        (dateA >= oneWeekAgo ? 1 : 0)
+      );
+    }
+    return 0;
+  });
 
   const [newJob, setNewJob] = useState({
     company: "",
@@ -125,7 +152,7 @@ const handleEdit = (job) => {
       </div>
 
       <div className="filter-jobs">
-        <label htmlFor="filterStatus">Filter by Status: </label>
+        <label className = "job-filterStatus" htmlFor="filterStatus">Filter by Status: </label>
         <select
           name="filterStatus"
           value={filterStatus}
@@ -137,6 +164,19 @@ const handleEdit = (job) => {
           <option value="Accepted">Accepted</option>
           <option value="Interview">Interview</option>
           <option value="Rejected">Rejected</option>
+        </select>
+
+
+        <label className = "job-sortStatus" htmlFor="sortStatus">Sort By: </label>
+        <select
+          name="sortStatus"
+          value={sortStatus}
+          onChange={(e) => setSortStatus(e.target.value)}
+        >
+          <option value="Newest First">Newest First</option>
+          <option value="Oldest First">Oldest First</option>
+          <option value="Last 24 Hours">Last 24 Hours</option>
+          <option value="Last week">Last week</option>
         </select>
       </div>
 
@@ -235,7 +275,7 @@ const handleEdit = (job) => {
       )}
 
       <div className="jobs-list">
-        {filteredJobs.map((job) => (
+        {sortedJobs.map((job) => (
           <JobCard
             key={job.jobId}
             job={job}

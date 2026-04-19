@@ -175,3 +175,20 @@
   color: #64748b;
   margin-top: 4px;
 }
+
+
+/*--------------------------- SORT & FILTER ---------------------------- */
+.job-sortStatus {
+  margin-left: 10px;
+  gap: 8px;
+  color: #0f172a;
+  font-size: 17px;
+}
+
+.job-filterStatus {
+  margin-left: 10px;
+  gap: 8px;
+  color: #0f172a;
+  font-size: 17px;
+} 
+/*--------------------------------------------------------------------- */
