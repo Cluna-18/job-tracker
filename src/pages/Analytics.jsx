@@ -66,6 +66,9 @@ function Analytics({ jobs}){
             </div>
             <div className = "graphs-section">
                 <p>Graph Placeholder</p>
+                <p>Give graph that can change view based on apps over time. Allow change in time frame</p>
+                <p>Locations??</p>
+                <p>Other stats??</p>
             </div>
         
         

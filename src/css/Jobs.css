@@ -3,7 +3,8 @@
 .jobs-page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 40px;
+  padding: 40px;
 }
 
 .jobs-header h1 {

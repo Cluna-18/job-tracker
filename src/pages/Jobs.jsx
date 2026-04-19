@@ -133,7 +133,9 @@ const handleEdit = (job) => {
         >
           <option value="All">All</option>
           <option value="In Progress">In Progress</option>
+          <option value="Applied">Applied</option>
           <option value="Accepted">Accepted</option>
+          <option value="Interview">Interview</option>
           <option value="Rejected">Rejected</option>
         </select>
       </div>
