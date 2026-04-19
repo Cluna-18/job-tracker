@@ -4,8 +4,6 @@ function JobCard({ job, onDelete, onEdit }) {
     return new Date(date).toLocaleDateString();
   };
 
-  const formRef = useRef(null);
-
   return (
     <div className="job-card">
       <div className="job-card-content">

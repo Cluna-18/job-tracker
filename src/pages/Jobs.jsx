@@ -1,6 +1,5 @@
 import "../css/Jobs.css";
 import JobCard from "../components/JobCard";
-import { useState } from "react";
 import { createJob } from "../api/jobsApi";
 import { deleteJob } from "../api/jobsApi";
 import confirmDelete from "../components/confirmDelete";
@@ -29,6 +28,7 @@ function Jobs({ jobs, setJobs }) {
   const [showForm, setShowForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState("All");
   const [editingJobId, setEditingJobId] = useState(null);
+  const formRef = useRef(null);
 
   const filteredJobs =
     filterStatus === "All"
@@ -108,9 +108,14 @@ const handleEdit = (job) => {
 
   setEditingJobId(job.jobId);
   setShowForm(true);
-};
 
-const formRef = useRef(null);
+  setTimeout(() => {
+    formRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, 0);
+};
 
   return (
     <div className="jobs-page">
@@ -157,7 +162,7 @@ const formRef = useRef(null);
       </div>
 
       {showForm && (
-        <form className="job-form" onSubmit={handleAddJob}>
+          <form className="job-form" onSubmit={handleAddJob} ref={formRef}>
           <input
             type="text"
             name="company"
