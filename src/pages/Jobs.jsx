@@ -204,7 +204,7 @@ const handleEdit = (job) => {
       </div>
 
       {showForm && (
-          <form className="job-form" onSubmit={handleAddJob} ref={formRef}>
+          <form className="job-form" autoComplete="off" onSubmit={handleAddJob} ref={formRef}>
           <input
             type="text"
             name="company"
