@@ -1,0 +1,28 @@
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px;}
+
+.settings-header h1 {
+  font-size: 48px;
+  color: #0f172a;
+  margin: 0;
+}
+
+.settings-header p {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #64748b;
+}
+
+.settings-content {
+  gap: 40px;
+}
+
+.settings-content h2 {
+  font-size: 24px;
+  color: #0f172a;
+  margin-bottom: 10px;
+  margin-top: 25px;
+}

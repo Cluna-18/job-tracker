@@ -19,6 +19,20 @@ function Dashboard({ jobs }) {
 
   const recentApplications = [...jobs].slice(-3).reverse();
 
+  if (jobs == null || jobs.length === 0) {
+    return (
+      <div className="dashboard-page">
+        <div className="dashboard-header">
+          <h1>Dashboard</h1>
+          <p>Track your applications and monitor your progress.</p>
+        </div>
+        <p style={{ textAlign: "center", marginTop: "50px", fontSize: "18px", color: "#64748b" }}>
+          No applications found. Start adding jobs to see your dashboard stats!
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-page">
       <div className="dashboard-header">

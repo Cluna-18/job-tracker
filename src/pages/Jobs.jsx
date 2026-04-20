@@ -274,6 +274,11 @@ const handleEdit = (job) => {
         </form>
       )}
 
+      {sortedJobs.length === 0 && (
+        <p style={{ textAlign: "center", marginTop: "50px", fontSize: "18px", color: "#64748b" }}>
+          No applications match the selected filter/sort criteria.
+        </p>
+      )}
       <div className="jobs-list">
         {sortedJobs.map((job) => (
           <JobCard

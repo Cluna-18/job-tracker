@@ -54,7 +54,7 @@ function Analytics({ jobs}){
             <hr style={{ border: "none", borderTop: "2px solid black", width: "100%" }} />       
             <div className ="rates-section">
                 <h2>Application Status Distribution</h2>
-                <div className="chart-placeholder">
+                <div className="statistics-container">
                     <div className="rates-grid">
                         {rates.map((stat, index) => (
                         <div className="rates-card" key={index}>
