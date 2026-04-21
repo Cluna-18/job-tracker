@@ -5,6 +5,7 @@ import { deleteJob } from "../api/jobsApi";
 import confirmDelete from "../components/confirmDelete";
 import { updateJob } from "../api/jobsApi";
 import { useState, useRef } from "react";
+import { motion } from "framer-motion";
 
 function Jobs({ jobs, setJobs }) {
   const getTodayDate = () => {
@@ -144,6 +145,18 @@ const handleEdit = (job) => {
   }, 0);
 };
 
+//When area renders, it will fade in from the left side
+  const fadeInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.7,
+      ease: "easeOut",
+    },
+  },
+};
   return (
     <div className="jobs-page">
       <div className="jobs-header">
@@ -279,14 +292,24 @@ const handleEdit = (job) => {
           No applications match the selected filter/sort criteria.
         </p>
       )}
+
       <div className="jobs-list">
         {sortedJobs.map((job) => (
+          <motion.section
+             key={job.jobId}
+            className="job-card-wrapper"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
           <JobCard
             key={job.jobId}
             job={job}
             onDelete={confirmDelete.bind(null, job.jobId, handleDelete)}
             onEdit={handleEdit}
           />
+          </motion.section>
         ))}
       </div>
     </div>
