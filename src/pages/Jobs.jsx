@@ -1,9 +1,7 @@
 import "../css/Jobs.css";
 import JobCard from "../components/JobCard";
-import { createJob } from "../api/jobsApi";
-import { deleteJob } from "../api/jobsApi";
+import { createJob, deleteJob, updateJob, getJobs } from "../api/jobsApi";
 import confirmDelete from "../components/confirmDelete";
-import { updateJob } from "../api/jobsApi";
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
@@ -31,6 +29,7 @@ function Jobs({ jobs, setJobs }) {
   const [sortStatus, setSortStatus ] = useState("Newest First");
   const [editingJobId, setEditingJobId] = useState(null);
   const formRef = useRef(null);
+  const [syncMessage, setSyncMessage] = useState("");
 
   const filteredJobs =
     filterStatus === "All"
@@ -157,6 +156,37 @@ const handleEdit = (job) => {
     },
   },
 };
+
+const handleGmailSync = async () => {
+  try {
+    setSyncMessage("Syncing Gmail updates...");
+
+    const res = await fetch("http://localhost:8085/gmail/sync", {
+      method: "POST",
+    });
+
+    if (!res.ok) {
+      throw new Error("Gmail sync failed");
+    }
+
+    const text = await res.text();
+    console.log(text);
+
+    const updatedJobs = await getJobs();
+    setJobs(updatedJobs);
+
+    setSyncMessage("Gmail sync complete.");
+
+    setTimeout(() => {
+      setSyncMessage("");
+    }, 3000);
+  } catch (err) {
+    console.error("Sync failed", err);
+    setSyncMessage("Could not sync Gmail. Please try again.");
+  }
+};
+
+
   return (
     <div className="jobs-page">
       <div className="jobs-header">
@@ -214,6 +244,15 @@ const handleEdit = (job) => {
         >
           {showForm ? "Cancel" : "+ Add Job"}
         </button>
+        <div className="sync-info">
+          <button className="sync-button" onClick={handleGmailSync}>
+            Sync Gmail Updates
+          </button>
+        </div>
+
+        {syncMessage && (
+          <p className="sync-message">{syncMessage}</p>
+        )}
       </div>
 
       {showForm && (
