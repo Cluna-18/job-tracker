@@ -1,4 +1,3 @@
-
 /* -------------------------- MAIN PAGE ----------------------- */
 .jobs-page {
   display: flex;
@@ -22,43 +21,80 @@
 .add-job {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
-.add-job-button {
+.add-job-button,
+.sync-button {
   background-color: #3b82f6;
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: 12px 18px;
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
 
-.add-job-button:hover {
+.add-job-button:hover,
+.sync-button:hover {
   background-color: #2563eb;
+  transform: translateY(-2px);
 }
 
+.sync-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gmail-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot.connected {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.status-dot.disconnected {
+  background-color: #ef4444;
+}
+
+/*--------------------------- JOB CARDS ---------------------------- */
 .jobs-list {
   display: grid;
   gap: 16px;
 }
-/*--------------------------- JOB CARDS ---------------------------- */
+
 .job-card {
   background-color: white;
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 20px 4px 12px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  display: flex;
   flex-direction: column;
   gap: 16px;
-  border-color: black;
-  border-width: 10px;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
+
 .job-card:hover {
   background-color: #f1f5f9;
   transform: translateY(-3px);
-
 }
 
 .job-card-content h3 {
@@ -97,10 +133,12 @@
   background-color: #dbeafe;
   color: #1d4ed8;
 }
+
 .status-badge.applied {
   background-color: #fef3c7;
   color: #92400e;
 }
+
 .status-badge.interview {
   background-color: #ede9fe;
   color: #5b21b6;
@@ -134,10 +172,18 @@
   background-color: #fee2e2;
   color: #991b1b;
 }
+
 .delete-button:hover {
   background-color: #fecaca;
 }
 
+.job-date {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/*--------------------------- FORM ---------------------------- */
 .job-form {
   display: flex;
   gap: 10px;
@@ -174,53 +220,26 @@
 
 .job-form button:hover {
   background-color: #2563eb;
-}     
-
-.job-date {
-  font-size: 13px;
-  color: #64748b;
-  margin-top: 4px;
 }
-
 
 /*--------------------------- SORT & FILTER ---------------------------- */
-.job-sortStatus {
-  margin-left: 10px;
-  gap: 8px;
-  color: #0f172a;
-  font-size: 17px;
-}
-
-.job-filterStatus {
-  margin-left: 10px;
-  gap: 8px;
-  color: #0f172a;
-  font-size: 17px;
-} 
-/*--------------------------------------------------------------------- */
-
-.sync-info {
-  margin-top: 16px;
+.filter-jobs {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.sync-button {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
+.job-sortStatus,
+.job-filterStatus {
+  color: #0f172a;
+  font-size: 17px;
 }
 
+/*--------------------------- SYNC MODAL ---------------------------- */
 .sync-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(15, 23, 42, 0.55);
   display: flex;
   justify-content: center;
@@ -229,119 +248,118 @@
 }
 
 .sync-modal {
-  background: white;
+  background: #ffffff;
   width: 90%;
-  max-width: 600px;
-  max-height: 70vh;
+  max-width: 720px;
+  max-height: 80vh;
   overflow-y: auto;
-  border-radius: 20px;
-  padding: 28px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
 }
 
 .sync-modal h2 {
-  margin-top: 0;
-  color: #0f172a;
   text-align: center;
+  margin: 0 0 24px;
+  color: #0f172a;
+  font-size: 28px;
 }
 
-.sync-results {
-  margin-top: 20px;
-  background: #f8fafc;
-  border-radius: 14px;
-  padding: 16px;
+.sync-section {
+  margin-bottom: 28px;
 }
 
-.sync-results p {
-  margin: 8px 0;
-  color: #334155;
-  font-weight: 500;
+.sync-section h3 {
+  text-align: center;
+  color: #64748b;
+  font-size: 24px;
+  margin-bottom: 16px;
 }
 
-.sync-close-button {
-  margin-top: 20px;
-  width: 100%;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.sync-close-button:hover {
-  background: #2563eb;
-}
-
-.gmail-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 12px;
-  font-weight: 600;
-  color: #334155;
-}
-
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.status-dot.connected {
-  background-color: #22c55e; /* green */
-  box-shadow: 0 0 6px #22c55e;
-}
-
-.status-dot.disconnected {
-  background-color: #ef4444; /* red */
+.empty-sync-message {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 18px;
 }
 
 .sync-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 16px;
 }
 
 .sync-card {
   background: #f8fafc;
-  padding: 16px;
-  border-radius: 14px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.sync-card h4 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 22px;
 }
 
 .sync-status {
-  font-weight: 600;
+  color: #334155;
+  font-weight: 700;
   margin: 8px 0;
 }
 
 .sync-snippet {
-  font-size: 14px;
   color: #64748b;
-  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .sync-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.accept-btn,
+.decline-btn {
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
 
 .accept-btn {
   background: #22c55e;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
+}
+
+.accept-btn:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
 }
 
 .decline-btn {
   background: #ef4444;
+}
+
+.decline-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.sync-close-button {
+  width: 100%;
+  background: #3b82f6;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 800;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sync-close-button:hover {
+  background: #2563eb;
 }
