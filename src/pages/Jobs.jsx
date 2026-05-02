@@ -1,8 +1,8 @@
 import "../css/Jobs.css";
 import JobCard from "../components/JobCard";
-import { createJob, deleteJob, updateJob, getJobs } from "../api/jobsApi";
+import { createJob, deleteJob, updateJob, getJobs, getGmailAuthUrl } from "../api/jobsApi";
 import confirmDelete from "../components/confirmDelete";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
 function Jobs({ jobs, setJobs }) {
@@ -29,7 +29,9 @@ function Jobs({ jobs, setJobs }) {
   const [sortStatus, setSortStatus ] = useState("Newest First");
   const [editingJobId, setEditingJobId] = useState(null);
   const formRef = useRef(null);
-  const [syncMessage, setSyncMessage] = useState("");
+  const [showSyncModal, setShowSyncModal] = useState(false);
+  const [gmailConnected, setGmailConnected] = useState(false);
+  const [gmailSuggestions, setGmailSuggestions] = useState(null);
 
   const filteredJobs =
     filterStatus === "All"
@@ -159,31 +161,83 @@ const handleEdit = (job) => {
 
 const handleGmailSync = async () => {
   try {
-    setSyncMessage("Syncing Gmail updates...");
+    setShowSyncModal(true);
+    setGmailSuggestions(null); // triggers loading state
 
-    const res = await fetch("http://localhost:8085/gmail/sync", {
-      method: "POST",
-    });
+    const res = await fetch("http://localhost:8085/gmail/sync-preview");
+    const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error("Gmail sync failed");
-    }
-
-    const text = await res.text();
-    console.log(text);
-
-    const updatedJobs = await getJobs();
-    setJobs(updatedJobs);
-
-    setSyncMessage("Gmail sync complete.");
-
-    setTimeout(() => {
-      setSyncMessage("");
-    }, 3000);
+    setGmailSuggestions(data);
   } catch (err) {
-    console.error("Sync failed", err);
-    setSyncMessage("Could not sync Gmail. Please try again.");
+    console.error(err);
+    setGmailSuggestions([]);
   }
+};
+
+const handleConnectGmail = async () => {
+  try {
+    const authUrl = await getGmailAuthUrl();
+    window.location.href = authUrl;
+  } catch (error) {
+    console.error("Failed to connect Gmail:", error);
+    alert("Could not connect Gmail. Please try again.");
+  }
+};
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("gmailConnected") === "true") {
+    setGmailConnected(true);
+    localStorage.setItem("gmailConnected", "true");
+
+    window.history.replaceState({}, "", "/jobs");
+  } else {
+    const saved = localStorage.getItem("gmailConnected");
+    if (saved === "true") {
+      setGmailConnected(true);
+    }
+  }
+}, []);
+
+const acceptSuggestion = async (item) => {
+  await fetch("http://localhost:8085/gmail/accept-suggestion", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  // remove from UI
+  setGmailSuggestions(prev =>
+    prev.filter(s => s.emailId !== item.emailId)
+  );
+
+  // refresh jobs
+  const updatedJobs = await getJobs();
+  setJobs(updatedJobs);
+};
+
+const declineSuggestion = async (item) => {
+  await fetch("http://localhost:8085/gmail/decline-suggestion", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  setGmailSuggestions((prev) =>
+    prev.filter(
+      (s) =>
+        !(
+          s.jobId === item.jobId &&
+          s.emailId === item.emailId &&
+          s.suggestedStatus === item.suggestedStatus
+        )
+    )
+  );
 };
 
 
@@ -245,14 +299,24 @@ const handleGmailSync = async () => {
           {showForm ? "Cancel" : "+ Add Job"}
         </button>
         <div className="sync-info">
+          <button className="sync-button" onClick={handleConnectGmail}>
+            Connect Gmail
+          </button>
+
           <button className="sync-button" onClick={handleGmailSync}>
             Sync Gmail Updates
           </button>
+          <div className="gmail-status">
+              <span
+                className={`status-dot ${
+                  gmailConnected ? "connected" : "disconnected"
+                }`}
+              />
+              <span>
+                {gmailConnected ? "Gmail Connected" : "Gmail Not Connected"}
+              </span>
+          </div>
         </div>
-
-        {syncMessage && (
-          <p className="sync-message">{syncMessage}</p>
-        )}
       </div>
 
       {showForm && (
@@ -332,6 +396,58 @@ const handleGmailSync = async () => {
         </p>
       )}
 
+                  {showSyncModal && (
+        <div className="sync-modal-overlay">
+          <div className="sync-modal">
+            <h2>Gmail Suggestions</h2>
+
+            {gmailSuggestions === null ? (
+              <p>Loading suggestions...</p>
+            ) : gmailSuggestions.length === 0 ? (
+              <p>No updates found</p>
+            ) : (
+              <div className="sync-list">
+                {gmailSuggestions.map((item) => (
+                  <div
+                    className="sync-card"
+                    key={`${item.jobId}-${item.emailId}`}
+                  >
+                    <h3>{item.company}</h3>
+
+                    <p className="sync-status">
+                      {item.currentStatus} → {item.suggestedStatus}
+                    </p>
+
+                    <p className="sync-snippet">
+                      {item.snippet}
+                    </p>
+
+                    <div className="sync-actions">
+                      <button
+                        className="accept-btn"
+                        onClick={() => acceptSuggestion(item)}
+                      >
+                        Accept
+                      </button>
+
+                      <button
+                        className="decline-btn"
+                        onClick={() => declineSuggestion(item)}
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+          <button className="sync-close-button" onClick={() => setShowSyncModal(false)}>
+            Close
+          </button>
+          </div>
+        </div>
+      )}
       <div className="jobs-list">
         {sortedJobs.map((job) => (
           <motion.section

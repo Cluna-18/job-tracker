@@ -34,3 +34,13 @@ export const updateJob = async (jobId, job) => {
     throw new Error("Failed to update job");
   }
 };
+
+export const getGmailAuthUrl = async () => {
+  const response = await fetch("http://localhost:8085/gmail/auth-url");
+
+  if (!response.ok) {
+    throw new Error("Failed to get Gmail auth URL");
+  }
+
+  return await response.text();
+};

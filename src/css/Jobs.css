@@ -215,9 +215,133 @@
   cursor: pointer;
 }
 
-.sync-message {
-  margin-top: 12px;
+.sync-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.sync-modal {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  max-height: 70vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.sync-modal h2 {
+  margin-top: 0;
+  color: #0f172a;
   text-align: center;
-  color: #64748b;
+}
+
+.sync-results {
+  margin-top: 20px;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.sync-results p {
+  margin: 8px 0;
+  color: #334155;
   font-weight: 500;
+}
+
+.sync-close-button {
+  margin-top: 20px;
+  width: 100%;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sync-close-button:hover {
+  background: #2563eb;
+}
+
+.gmail-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot.connected {
+  background-color: #22c55e; /* green */
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.status-dot.disconnected {
+  background-color: #ef4444; /* red */
+}
+
+.sync-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.sync-card {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.sync-status {
+  font-weight: 600;
+  margin: 8px 0;
+}
+
+.sync-snippet {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.sync-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.accept-btn {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.decline-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
 }
