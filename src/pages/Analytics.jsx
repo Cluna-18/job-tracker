@@ -55,15 +55,21 @@ function Analytics({ jobs }) {
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(today.getDate() - 7);
 
+  const daysSinceMonday = (today.getDay() + 6) % 7;
+  
   const appsThisWeek = jobs.filter((job) => {
     const appliedDate = new Date(job.dateApplied);
     return appliedDate >= oneWeekAgo && appliedDate <= today;
   }).length;
 
+  if (daysSinceMonday === 0 && appsThisWeek > 0) {
+    // If it's Monday and there are applications from the previous week, reset the weekly goal
+    appsThisWeek = 0;
+  }
   const appsRemaining = Math.max(weeklyGoal - appsThisWeek, 0);
   const goalMet = appsThisWeek >= weeklyGoal;
   const goalPercent = Math.min((appsThisWeek / weeklyGoal) * 100, 100);
-
+  
   return (
     <div className="analytics-page">
       <div className="analytics-header">
