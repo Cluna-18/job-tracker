@@ -20,10 +20,8 @@ function Jobs({ jobs, setJobs }) {
   const [editingJobId, setEditingJobId] = useState(null);
   const [showSyncModal, setShowSyncModal] = useState(false);
   const [gmailConnected, setGmailConnected] = useState(false);
-  const [gmailSuggestions, setGmailSuggestions] = useState({
-    statusSuggestions: [],
-    newJobSuggestions: [],
-  });
+  const [gmailSuggestions, setGmailSuggestions] = useState({ statusSuggestions: [], newJobSuggestions: [],});
+  const [isSyncing, setIsSyncing ] = useState(false);
 
   const formRef = useRef(null);
 
@@ -193,33 +191,37 @@ function Jobs({ jobs, setJobs }) {
   };
 
   const handleGmailSync = async () => {
-    try {
-      setShowSyncModal(true);
-      setGmailSuggestions({
-        statusSuggestions: [],
-        newJobSuggestions: [],
-      });
+  try {
+    setShowSyncModal(true);
+    setIsSyncing(true);
 
-      const res = await fetch("http://localhost:8085/gmail/sync-preview");
+    setGmailSuggestions({
+      statusSuggestions: [],
+      newJobSuggestions: [],
+    });
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch suggestions");
-      }
+    const res = await fetch("http://localhost:8085/gmail/sync-preview");
 
-      const data = await res.json();
-
-      setGmailSuggestions({
-        statusSuggestions: data.statusSuggestions || [],
-        newJobSuggestions: data.newJobSuggestions || [],
-      });
-    } catch (err) {
-      console.error(err);
-      setGmailSuggestions({
-        statusSuggestions: [],
-        newJobSuggestions: [],
-      });
+    if (!res.ok) {
+      throw new Error("Failed to fetch suggestions");
     }
-  };
+
+    const data = await res.json();
+
+    setGmailSuggestions({
+      statusSuggestions: data.statusSuggestions || [],
+      newJobSuggestions: data.newJobSuggestions || [],
+    });
+  } catch (err) {
+    console.error(err);
+    setGmailSuggestions({
+      statusSuggestions: [],
+      newJobSuggestions: [],
+    });
+  } finally {
+    setIsSyncing(false);
+  }
+};
 
   const acceptSuggestion = async (item) => {
     try {
@@ -473,7 +475,12 @@ function Jobs({ jobs, setJobs }) {
         <div className="sync-modal-overlay">
           <div className="sync-modal">
             <h2>Gmail Suggestions</h2>
-
+            {isSyncing ? (
+              <div className="sync-loading">
+                <div className="sync-spinner"></div>
+                <p>Searching Gmail for updates...</p>
+              </div>
+            ) : (
             <section className="sync-section">
               <h3>Status Updates</h3>
 
@@ -513,7 +520,7 @@ function Jobs({ jobs, setJobs }) {
                   ))}
                 </div>
               )}
-            </section>
+            </section>)}
 
             <section className="sync-section">
               <h3>New Job Suggestions</h3>
